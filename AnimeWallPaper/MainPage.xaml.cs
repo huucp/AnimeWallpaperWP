@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using AnimeWallPaper.Resources;
+using AnimeWallPaper.Request;
 
 namespace AnimeWallPaper
 {
@@ -17,6 +17,22 @@ namespace AnimeWallPaper
         public MainPage()
         {
             InitializeComponent();
+
+            var request = new GetAllAnimeRequest();
+            request.ProcessSuccessfully += (data) =>
+            {
+                var list = (List<AnimeCategory>)data;
+                if (list == null) return;
+                Dispatcher.BeginInvoke(() =>
+                {
+                    foreach (var anime in list)
+                    {
+                        ListAnime.Items.Add(anime.Name);
+                    }
+                });
+
+            };
+            GlobalVariables.WorkerRequest.AddRequest(request);
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
