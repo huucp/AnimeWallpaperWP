@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
 using AnimeWallPaper.Request;
 
 namespace AnimeWallPaper
@@ -23,11 +17,18 @@ namespace AnimeWallPaper
             {
                 var list = (List<AnimeCategory>)data;
                 if (list == null) return;
+
                 Dispatcher.BeginInvoke(() =>
                 {
-                    foreach (var anime in list)
+                    for (int i = 0; i < 20; i++)
                     {
-                        ListAnime.Items.Add(anime.Name);
+                        var control = new AnimeCategoryControl(list[i]);
+                        LeftPanel.Children.Add(control);
+                    }
+                    for (int i = 20; i < 40; i++)
+                    {
+                        var control = new AnimeCategoryControl(list[i]);
+                        RightPanel.Children.Add(control);
                     }
                 });
 

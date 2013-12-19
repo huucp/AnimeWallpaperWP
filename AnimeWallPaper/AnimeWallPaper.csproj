@@ -90,6 +90,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnimeCategoryControl.xaml.cs">
+      <DependentUpon>AnimeCategoryControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -108,14 +111,24 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Ultility\BlockingQueue.cs" />
+    <Compile Include="Ultility\FileNameFromURL.cs" />
+    <Compile Include="Ultility\GlobalFunctions.cs" />
     <Compile Include="Ultility\GlobalVariables.cs" />
+    <Compile Include="Ultility\ImageDownloader.cs" />
+    <Compile Include="Ultility\LimitedItemImageDictionary.cs" />
     <Compile Include="Ultility\RequestWorker.cs" />
+    <Compile Include="ViewModels\AnimeCategoryControlViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="AnimeCategoryControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

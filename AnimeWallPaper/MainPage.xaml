@@ -15,7 +15,23 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <ListBox Name="ListAnime"/>
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="100"/>
+    		<RowDefinition/>
+    		<RowDefinition Height="50"/>
+    	</Grid.RowDefinitions>
+    	<ScrollViewer Margin="0" Grid.Row="1">
+    		<Grid>
+    			<Grid.ColumnDefinitions>
+    				<ColumnDefinition/>
+    				<ColumnDefinition/>
+    			</Grid.ColumnDefinitions>
+    			<StackPanel x:Name="LeftPanel" Margin="0">
+                    
+                </StackPanel>
+    		    <StackPanel x:Name="RightPanel" Grid.Column="1" Margin="0"/>
+    		</Grid>
+    	</ScrollViewer>
     </Grid>
 
 </phone:PhoneApplicationPage>
