@@ -19,17 +19,20 @@ namespace AnimeWallPaper
                 if (list == null) return;
 
                 Dispatcher.BeginInvoke(() =>
-                {
-                    for (int i = 0; i < 20; i++)
+                {                    
+                    for (int i = 0; i <list.Count; i+=2)
                     {
-                        var control = new AnimeCategoryControl(list[i]);
+                        var control = new ImageControl(list[i]);
                         LeftPanel.Children.Add(control);
+                        if ((i+1)==list.Count) break;
+                        var control2 = new ImageControl(list[i + 1]);
+                        RightPanel.Children.Add(control2);                        
                     }
-                    for (int i = 20; i < 40; i++)
-                    {
-                        var control = new AnimeCategoryControl(list[i]);
-                        RightPanel.Children.Add(control);
-                    }
+                    //for (int i = 20; i < 40; i++)
+                    //{
+                    //    var control = new ImageControl(list[i]);
+                    //    RightPanel.Children.Add(control);
+                    //}
                 });
 
             };

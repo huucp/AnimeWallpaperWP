@@ -4,7 +4,7 @@ using AnimeWallPaper.Ultility;
 
 namespace AnimeWallPaper.ViewModels
 {
-    public class AnimeCategoryControlViewModel:ViewModelBase
+    public class ImageControlViewModel:ViewModelBase
     {
         private BitmapImage _imageSource = null;
         public BitmapImage ImageSource
