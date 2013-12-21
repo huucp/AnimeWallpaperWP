@@ -20,6 +20,7 @@ namespace AnimeWallPaper
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            if (e.NavigationMode == NavigationMode.Back) return;            
             string id;
             if (NavigationContext.QueryString.TryGetValue("id", out id))
             {
@@ -28,14 +29,18 @@ namespace AnimeWallPaper
                 {
                     var images = (ImagesJson)data;
                     if (data == null || images == null) return;
-                    
-                    for (int i =0; i < images.Count; i+=2)
+                    Dispatcher.BeginInvoke(() =>
                     {
-                        var lControl = new ImageControl(images._content[i]);
-                        LeftPanel.Children.Add(lControl);
-                        var rControl = new ImageControl(images._content[i+1]);
-                        RightPanel.Children.Add(rControl);
-                    }
+                        for (int i = 0; i < images.Count; i += 2)
+                        {
+                            var lControl = new ImageControl(images._content[i]);
+                            LeftPanel.Children.Add(lControl);
+                            if ((i + 1) == images.Count) break;
+                            var rControl = new ImageControl(images._content[i + 1]);
+                            RightPanel.Children.Add(rControl);
+                        }
+                    });
+
                 };
                 GlobalVariables.WorkerRequest.AddRequest(request);
             }

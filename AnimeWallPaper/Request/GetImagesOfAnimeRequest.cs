@@ -24,7 +24,7 @@ namespace AnimeWallPaper.Request
             var result = JsonConvert.DeserializeObject<AnimeAllImagesJson>(json);
             if (result == null || result.Stat != "ok")
             {
-                OnProcessError(null, "GetAllAnimeRequest failed!");
+                OnProcessError(null, "GetCategoriesRequest failed!");
                 return null;
             }
             return result.Result.Images;

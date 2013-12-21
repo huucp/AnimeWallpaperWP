@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Microsoft.Phone.Controls;
 using AnimeWallPaper.Request;
+using Newtonsoft.Json;
 
 namespace AnimeWallPaper
 {
@@ -12,50 +13,48 @@ namespace AnimeWallPaper
         {
             InitializeComponent();
 
-            var request = new GetAllAnimeRequest();
-            request.ProcessSuccessfully += (data) =>
+            var json = GlobalFunctions.GetListCategories();
+            if (json != string.Empty)
             {
-                var list = (List<AnimeCategory>)data;
-                if (list == null) return;
+                AddCategory(json);
+            }
+            else
+            {
+                var request = new GetCategoriesRequest();
+                request.ProcessSuccessfully += (data) =>
+                {
+                    var dataString = (string)data;
+                    if (data == null || dataString == json) return;
 
-                Dispatcher.BeginInvoke(() =>
-                {                    
-                    for (int i = 0; i <list.Count; i+=2)
-                    {
-                        var control = new ImageControl(list[i]);
-                        LeftPanel.Children.Add(control);
-                        if ((i+1)==list.Count) break;
-                        var control2 = new ImageControl(list[i + 1]);
-                        RightPanel.Children.Add(control2);                        
-                    }
-                    //for (int i = 20; i < 40; i++)
-                    //{
-                    //    var control = new ImageControl(list[i]);
-                    //    RightPanel.Children.Add(control);
-                    //}
-                });
+                    Dispatcher.BeginInvoke(() => AddCategory(dataString));
 
-            };
-            GlobalVariables.WorkerRequest.AddRequest(request);
-
-            // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
+                    GlobalFunctions.SaveListCategories((string)data);
+                };
+                GlobalVariables.WorkerRequest.AddRequest(request);
+            }
         }
 
-        // Sample code for building a localized ApplicationBar
-        //private void BuildLocalizedApplicationBar()
-        //{
-        //    // Set the page's ApplicationBar to a new instance of ApplicationBar.
-        //    ApplicationBar = new ApplicationBar();
+        private List<AnimeCategory> ParseCategory(string json)
+        {
+            var result = JsonConvert.DeserializeObject<GetAllAnimeJson>(json);
+            if (result == null || result.Stat != "ok")
+            {
+                return null;
+            }
+            return result.Result.Categories;
+        }
 
-        //    // Create a new button and set the text value to the localized string from AppResources.
-        //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-        //    appBarButton.Text = AppResources.AppBarButtonText;
-        //    ApplicationBar.Buttons.Add(appBarButton);
-
-        //    // Create a new menu item with the localized string from AppResources.
-        //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-        //}
+        private void AddCategory(string data)
+        {
+            var list = ParseCategory(data);
+            for (int i = 0; i < list.Count; i += 2)
+            {
+                var control = new ImageControl(list[i]);
+                LeftPanel.Children.Add(control);
+                if ((i + 1) == list.Count) break;
+                var control2 = new ImageControl(list[i + 1]);
+                RightPanel.Children.Add(control2);
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace AnimeWallPaper.Request
 {
-    public class GetAllAnimeRequest : BaseRequest
+    public class GetCategoriesRequest : BaseRequest
     {
         public override string BuildRequest()
         {
@@ -16,13 +16,14 @@ namespace AnimeWallPaper.Request
         }
         public override object ParseJson(string json)
         {
-            var result = JsonConvert.DeserializeObject<GetAllAnimeJson>(json);
-            if (result == null || result.Stat != "ok")
-            {
-                OnProcessError(null, "GetAllAnimeRequest failed!");
-                return null;
-            }            
-            return result.Result.Categories;
+            return json;
+            //var result = JsonConvert.DeserializeObject<GetAllAnimeJson>(json);
+            //if (result == null || result.Stat != "ok")
+            //{
+            //    OnProcessError(null, "GetCategoriesRequest failed!");
+            //    return null;
+            //}            
+            //return result.Result.Categories;
         }
     }
 }
