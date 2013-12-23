@@ -3,7 +3,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ViewModels="clr-namespace:AnimeWallPaper.ViewModels" x:Class="AnimeWallPaper.ImageControl"
+    xmlns:ViewModels="clr-namespace:AnimeWallPaper.ViewModels"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    x:Class="AnimeWallPaper.ImageControl"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -13,7 +15,10 @@
 		<ViewModels:ImageControlViewModel/>
 	</UserControl.DataContext>
     
-	<Grid x:Name="LayoutRoot" MouseLeftButtonUp="LayoutRoot_OnMouseLeftButtonUp">
+	<Grid x:Name="LayoutRoot">
+        <toolkit:GestureService.GestureListener>
+            <toolkit:GestureListener Tap="GestureListener_OnTap"/>
+        </toolkit:GestureService.GestureListener>
         <Image Margin="0" Stretch="UniformToFill" Source="{Binding ImageSource}"/>
 		<Border x:Name="NameBorder" BorderBrush="Black" BorderThickness="0" Margin="0" VerticalAlignment="Bottom" Height="36" Background="Black" Opacity="0.5">
 			<TextBlock Margin="0"  Text="{Binding Name}" TextWrapping="Wrap" FontSize="20"

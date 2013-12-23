@@ -5,6 +5,7 @@ using System.Windows.Input;
 using AnimeWallPaper.Request;
 using AnimeWallPaper.ViewModels;
 using Microsoft.Phone.Controls;
+using GestureEventArgs = Microsoft.Phone.Controls.GestureEventArgs;
 
 namespace AnimeWallPaper
 {
@@ -38,17 +39,19 @@ namespace AnimeWallPaper
             NameBorder.Visibility = Visibility.Collapsed;
             _imageInfo = info;
         }
+        
 
-        private void LayoutRoot_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void GestureListener_OnTap(object sender, GestureEventArgs e)
         {
             var phoneApplicationFrame = Application.Current.RootVisual as PhoneApplicationFrame;
             if (phoneApplicationFrame == null) return;
             if (hasName)
             {
+                //GlobalVariables.WorkerImage.ClearAll();
                 phoneApplicationFrame.Navigate(new Uri("/CategoryPage.xaml?id=" + _categoryInfo.ID, UriKind.Relative));
             }
             else
-            {
+            {// GlobalVariables.WorkerImage.ClearAll();
                 phoneApplicationFrame.Navigate(new Uri("/ImageDetailPage.xaml?url=" + _imageInfo.Derivatives.Large.Url,
                                                        UriKind.Relative));
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Phone.Controls;
 using AnimeWallPaper.Request;
@@ -8,6 +9,9 @@ namespace AnimeWallPaper
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        private List<AnimeCategory> _listCategory = new List<AnimeCategory>();
+        private int _index = 0;
+        private const int NumberOfCategoryAdded = 20;
         // Constructor
         public MainPage()
         {
@@ -16,7 +20,8 @@ namespace AnimeWallPaper
             var json = GlobalFunctions.GetListCategories();
             if (json != string.Empty)
             {
-                AddCategory(json);
+                _listCategory = ParseCategory(json);
+                AddCategory();
             }
             else
             {
@@ -25,9 +30,8 @@ namespace AnimeWallPaper
                 {
                     var dataString = (string)data;
                     if (data == null || dataString == json) return;
-
-                    Dispatcher.BeginInvoke(() => AddCategory(dataString));
-
+                    _listCategory = ParseCategory(json);
+                    Dispatcher.BeginInvoke(AddCategory);              
                     GlobalFunctions.SaveListCategories((string)data);
                 };
                 GlobalVariables.WorkerRequest.AddRequest(request);
@@ -44,17 +48,32 @@ namespace AnimeWallPaper
             return result.Result.Categories;
         }
 
-        private void AddCategory(string data)
+        private void AddCategory()
         {
-            var list = ParseCategory(data);
-            for (int i = 0; i < list.Count; i += 2)
+            if (_index >= _listCategory.Count) return;
+            for (int i = _index; i < _index + NumberOfCategoryAdded; i += 2)
             {
-                var control = new ImageControl(list[i]);
+                var control = new ImageControl(_listCategory[i]);
                 LeftPanel.Children.Add(control);
-                if ((i + 1) == list.Count) break;
-                var control2 = new ImageControl(list[i + 1]);
+                if ((i + 1) == _listCategory.Count) break;
+                var control2 = new ImageControl(_listCategory[i + 1]);
                 RightPanel.Children.Add(control2);
             }
+            _index += NumberOfCategoryAdded;
+        }
+
+        private void MainScrollViewer_OnLayoutUpdated(object sender, EventArgs e)
+        {
+            if (Math.Abs(MainScrollViewer.ScrollableHeight - 0) > EPSILON && Math.Abs(MainScrollViewer.VerticalOffset - 0) > EPSILON && 
+                (MainScrollViewer.ScrollableHeight - MainScrollViewer.VerticalOffset) <= 100)
+            {
+                AddCategory();
+            }
+        }
+
+        protected double EPSILON
+        {
+            get { return 0.001; }
         }
     }
 }

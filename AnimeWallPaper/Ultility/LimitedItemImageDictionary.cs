@@ -31,7 +31,11 @@ namespace AnimeWallPaper.Ultility
         {
             foreach (var item in _imageDictionay)
             {
-                if (item.Key == key) return item.Value;
+                if (item.Key == key)
+                {
+                    BitmapImage bitmapImage = item.Value;
+                    return bitmapImage;
+                }
             }
             return null;
         }

@@ -20,9 +20,8 @@ namespace AnimeWallPaper
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.NavigationMode == NavigationMode.Back) return;            
             string id;
-            if (NavigationContext.QueryString.TryGetValue("id", out id))
+            if (e.NavigationMode == NavigationMode.New && NavigationContext.QueryString.TryGetValue("id", out id))
             {
                 var request = new GetImagesOfAnimeRequest(id);
                 request.ProcessSuccessfully += (data) =>
