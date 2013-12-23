@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
+using GoogleAds;
 using Microsoft.Phone.Controls;
 using AnimeWallPaper.Request;
 using Newtonsoft.Json;
@@ -74,6 +77,31 @@ namespace AnimeWallPaper
         protected double EPSILON
         {
             get { return 0.001; }
+        }
+
+        private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var bannerAd = new AdView
+            {
+                Format = AdFormats.SmartBanner,
+                AdUnitID = "a152b86315e5016"
+            };
+            bannerAd.ReceivedAd += OnAdReceived;
+            bannerAd.FailedToReceiveAd += OnFailedToReceiveAd;
+            bannerAd.SetValue(Grid.RowProperty, 2);
+            LayoutRoot.Children.Add(bannerAd);
+            var adRequest = new AdRequest();
+            bannerAd.LoadAd(adRequest);
+        }
+
+        private void OnFailedToReceiveAd(object sender, AdErrorEventArgs e)
+        {
+            Debug.WriteLine("Failed to receive ad with error " + e.ErrorCode);
+        }
+
+        private void OnAdReceived(object sender, AdEventArgs e)
+        {
+            Debug.WriteLine("Received ad successfully");
         }
     }
 }
