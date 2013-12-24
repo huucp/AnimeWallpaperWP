@@ -37,8 +37,8 @@ namespace AnimeWallPaper
                 using (var stream = new IsolatedStorageFileStream(path, FileMode.Open, storage))
                 {
                     image.SetSource(stream);
-                    ImageContainer.Height = image.PixelHeight;
-                    ImageContainer.Width = image.PixelWidth;
+                    ImageContainer.Height = height = image.PixelHeight;
+                    ImageContainer.Width = width = image.PixelWidth;
                 }
             }
             ImageContainer.Source = image;
@@ -63,10 +63,12 @@ namespace AnimeWallPaper
                 return;
             }
         }
+
+        private double height, width;
+
+
         private void ReshapeImageContainer()
         {
-            double height = ImageContainer.Height;
-            double width = ImageContainer.Width;
             CheckImageDirectionMove();
             if (ResolutionHelper.CurrentResolution == Resolutions.WVGA ||
                 ResolutionHelper.CurrentResolution == Resolutions.WXGA)
@@ -162,6 +164,9 @@ namespace AnimeWallPaper
         private async void CropButton_OnClick(object sender, EventArgs e)
         {
             var cropRect = CalculateCropRect();
+            cropRect.X *= height / ImageContainer.Height;
+            cropRect.Width *= height/ImageContainer.Height;
+            cropRect.Height *= height/ImageContainer.Height;
             var path = ImageDetailPage.EditingLockscreenFilename + ".jpg";
             using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -184,7 +189,7 @@ namespace AnimeWallPaper
 
                     WriteImageToLocal(cartoonImageBitmap);
 
-                    // SetLockScreen();
+                    SetLockScreen();
                 }
             }
 
