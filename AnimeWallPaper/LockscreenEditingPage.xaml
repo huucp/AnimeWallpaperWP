@@ -13,13 +13,33 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False" Loaded="PhoneApplicationPage_OnLoaded">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.5">
+            <shell:ApplicationBarIconButton IconUri="/Assets/AppBar/check.png" Text="Crop"
+                                            Click="CropButton_OnClick"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-       
+        <Image Name="ImageContainer" MinWidth="270" MinHeight="450" Margin="0,50,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Stretch="UniformToFill"
+               MouseLeftButtonDown="ImageContainer_OnMouseLeftButtonDown" MouseMove="ImageContainer_OnMouseMove" />
+        <Grid Margin="0" Name="CropLayout" Canvas.ZIndex="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Rectangle HorizontalAlignment="Left" Margin="0" Name="MainRect"  Stroke="White" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Width="360" Height="640"/>
+            <Rectangle Margin="0" Stroke="White" Grid.RowSpan="3" Fill="Black" Opacity="0.5" StrokeThickness="0"/>
+            <Rectangle Margin="0" Stroke="White" Grid.Column="1" Fill="Black" Opacity="0.5" StrokeThickness="0"/>
+            <Rectangle Margin="0" Stroke="White" Grid.Column="1" Grid.Row="2" Fill="Black" Opacity="0.5" StrokeThickness="0"/>
+            <Rectangle Margin="0" Stroke="White" Grid.RowSpan="3" Grid.Column="2" Fill="Black" Opacity="0.5" StrokeThickness="0"/>
+        </Grid>
+
     </Grid>
 
 </phone:PhoneApplicationPage>
