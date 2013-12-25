@@ -10,7 +10,9 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="480" d:DesignWidth="480" Width="216" Height="144" Margin="0,0,0,10">
+    d:DesignHeight="480" d:DesignWidth="480" 
+    Width="236" Height="156" Margin="2,2"
+    >
 	<UserControl.DataContext>
 		<ViewModels:ImageControlViewModel/>
 	</UserControl.DataContext>
@@ -19,6 +21,7 @@
         <toolkit:GestureService.GestureListener>
             <toolkit:GestureListener Tap="GestureListener_OnTap"/>
         </toolkit:GestureService.GestureListener>
+        <TextBlock HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Loading..." VerticalAlignment="Center" Foreground="Black"/>
         <Image Margin="0" Stretch="UniformToFill" Source="{Binding ImageSource}"/>
 		<Border x:Name="NameBorder" BorderBrush="Black" BorderThickness="0" Margin="0" VerticalAlignment="Bottom" Height="36" Background="Black" Opacity="0.5">
 			<TextBlock Margin="0"  Text="{Binding Name}" TextWrapping="Wrap" FontSize="20"

@@ -54,12 +54,12 @@ namespace AnimeWallPaper
             if (ResolutionHelper.CurrentResolution == Resolutions.WVGA ||
                 ResolutionHelper.CurrentResolution == Resolutions.WXGA)
             {
-                _horizontalMove = ((ImageContainer.Height / ImageContainer.Width) < (15 / 9));
+                _horizontalMove = ((ImageContainer.Height / 15) < (ImageContainer.Width / 9));
                 return;
             }
             if (ResolutionHelper.CurrentResolution == Resolutions.HD)
             {
-                _horizontalMove = ((ImageContainer.Height / ImageContainer.Width) < (16 / 9));
+                _horizontalMove = ((ImageContainer.Height / 16) < (ImageContainer.Width / 9));
                 return;
             }
         }
@@ -101,6 +101,12 @@ namespace AnimeWallPaper
             }
             ImageContainer.Stretch = Stretch.Fill;
             ImageContainer.HorizontalAlignment = HorizontalAlignment.Left;
+            if (!_horizontalMove)
+            {
+                var margin = ImageContainer.Margin;
+                margin.Left = CropLayout.ColumnDefinitions[0].ActualWidth;
+                ImageContainer.Margin = margin;
+            }
         }
 
         private void CalculateWindowRect()
@@ -160,13 +166,19 @@ namespace AnimeWallPaper
         {
             return new Rect(CropLayout.ColumnDefinitions[0].ActualWidth - ImageContainer.Margin.Left, 0, MainRect.Width, MainRect.Height);
         }
-
+        private Rect ReframeRect(Rect rect, double para)
+        {
+            Rect r;
+            r.X = rect.X * para;
+            r.Y = rect.Y * para;
+            r.Width = rect.Width * para;
+            r.Height = rect.Height * para;
+            return r;
+        }
         private async void CropButton_OnClick(object sender, EventArgs e)
         {
             var cropRect = CalculateCropRect();
-            cropRect.X *= height / ImageContainer.Height;
-            cropRect.Width *= height/ImageContainer.Height;
-            cropRect.Height *= height/ImageContainer.Height;
+            cropRect = ReframeRect(cropRect, height / ImageContainer.Height);
             var path = ImageDetailPage.EditingLockscreenFilename + ".jpg";
             using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -182,14 +194,23 @@ namespace AnimeWallPaper
                     cartoonImageBitmap = await renderer.RenderAsync();
 
                     // preview
-                    ImageContainer.Width = MainRect.Width;
-                    ImageContainer.Height = MainRect.Height;
-                    ImageContainer.Margin = new Thickness(CropLayout.ColumnDefinitions[0].Width.Value, CropLayout.RowDefinitions[0].Height.Value, 0, 0);
-                    ImageContainer.Source = cartoonImageBitmap;
+                    //ImageContainer.Width = MainRect.Width;
+                    //ImageContainer.Height = MainRect.Height;
+                    //ImageContainer.Margin = new Thickness(CropLayout.ColumnDefinitions[0].Width.Value, CropLayout.RowDefinitions[0].Height.Value, 0, 0);
+                    //ImageContainer.Source = cartoonImageBitmap;
 
                     WriteImageToLocal(cartoonImageBitmap);
 
                     SetLockScreen();
+
+                    if(NavigationService.CanGoBack)
+                    {
+                        NavigationService.GoBack();
+                    }
+                    else
+                    {
+                        NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+                    }
                 }
             }
 

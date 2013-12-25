@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:AnimeWallPaper"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -16,10 +17,11 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
-            <!--<RowDefinition Height="Auto"/>-->
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Image Name="ImageContainer" Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+        <local:LoadingControl Name="Loading" Grid.Row="0"/>
+        <Image Name="ImageContainer" Grid.Row="1"  Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>

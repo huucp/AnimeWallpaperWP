@@ -19,26 +19,6 @@ namespace AnimeWallPaper
         public MainPage()
         {
             InitializeComponent();
-
-            var json = GlobalFunctions.GetListCategories();
-            if (json != string.Empty)
-            {
-                _listCategory = ParseCategory(json);
-                AddCategory();
-            }
-            else
-            {
-                var request = new GetCategoriesRequest();
-                request.ProcessSuccessfully += (data) =>
-                {
-                    var dataString = (string)data;
-                    if (data == null || dataString == json) return;
-                    _listCategory = ParseCategory(json);
-                    Dispatcher.BeginInvoke(AddCategory);              
-                    GlobalFunctions.SaveListCategories((string)data);
-                };
-                GlobalVariables.WorkerRequest.AddRequest(request);
-            }
         }
 
         private List<AnimeCategory> ParseCategory(string json)
@@ -67,10 +47,12 @@ namespace AnimeWallPaper
 
         private void MainScrollViewer_OnLayoutUpdated(object sender, EventArgs e)
         {
-            if (Math.Abs(MainScrollViewer.ScrollableHeight - 0) > EPSILON && Math.Abs(MainScrollViewer.VerticalOffset - 0) > EPSILON && 
+            if (Math.Abs(MainScrollViewer.ScrollableHeight - 0) > EPSILON && Math.Abs(MainScrollViewer.VerticalOffset - 0) > EPSILON &&
                 (MainScrollViewer.ScrollableHeight - MainScrollViewer.VerticalOffset) <= 100)
             {
+                Loading.Visibility=Visibility.Visible;
                 AddCategory();
+                Loading.Visibility=Visibility.Collapsed;
             }
         }
 
@@ -81,6 +63,36 @@ namespace AnimeWallPaper
 
         private void MainPage_OnLoaded(object sender, RoutedEventArgs e)
         {
+            LoadAd();
+            var json = GlobalFunctions.GetListCategories();
+            if (json != string.Empty)
+            {
+                _listCategory = ParseCategory(json);
+                AddCategory();
+                Loading.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                var request = new GetCategoriesRequest();
+                request.ProcessSuccessfully += (data) =>
+                {
+                    var dataString = (string)data;
+                    if (data == null || dataString == json) return;
+                    _listCategory = ParseCategory(dataString);
+                    Dispatcher.BeginInvoke(delegate()
+                    {
+                        AddCategory();
+                        Loading.Visibility = Visibility.Collapsed;
+                    });
+                    GlobalFunctions.SaveListCategories(dataString);
+                };
+                GlobalVariables.WorkerRequest.AddRequest(request);
+            }
+
+        }
+
+        private void LoadAd()
+        {
             var bannerAd = new AdView
             {
                 Format = AdFormats.SmartBanner,
@@ -88,12 +100,11 @@ namespace AnimeWallPaper
             };
             bannerAd.ReceivedAd += OnAdReceived;
             bannerAd.FailedToReceiveAd += OnFailedToReceiveAd;
-            bannerAd.SetValue(Grid.RowProperty, 2);
+            bannerAd.SetValue(Grid.RowProperty, 3);
             LayoutRoot.Children.Add(bannerAd);
             var adRequest = new AdRequest();
             bannerAd.LoadAd(adRequest);
         }
-
         private void OnFailedToReceiveAd(object sender, AdErrorEventArgs e)
         {
             Debug.WriteLine("Failed to receive ad with error " + e.ErrorCode);

@@ -22,6 +22,8 @@ namespace AnimeWallPaper
             InitializeComponent();
         }
 
+        private bool _canPress = false;
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -33,6 +35,11 @@ namespace AnimeWallPaper
                 {
                     ImageContainer.Source = image;
                     SaveEditingLockscreen(image);
+                    Dispatcher.BeginInvoke(() =>
+                                               {
+                                                   Loading.Visibility = Visibility.Collapsed;
+                                               });
+                    _canPress = true;
                 });
                 GlobalVariables.WorkerImage.AddDownload(imageRequest);
             }
@@ -40,7 +47,7 @@ namespace AnimeWallPaper
 
         private void SaveButton_OnClick(object sender, EventArgs e)
         {
-            
+            if (!_canPress) return;
             string path = EditingLockscreenFilename + ".jpg";
             using (IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -53,7 +60,10 @@ namespace AnimeWallPaper
 
         private void LockscreenButton_OnClick(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/LockscreenEditingPage.xaml", UriKind.Relative));
+            if (_canPress)
+            {
+                NavigationService.Navigate(new Uri("/LockscreenEditingPage.xaml", UriKind.Relative));
+            }
         }
 
         private void SaveEditingLockscreen(BitmapImage bitmapImage)

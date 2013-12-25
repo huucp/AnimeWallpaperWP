@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:AnimeWallPaper"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -14,19 +15,22 @@
     shell:SystemTray.IsVisible="False" Loaded="MainPage_OnLoaded">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-    	<Grid.RowDefinitions>
-    		<RowDefinition Height="100"/>
+    <Grid x:Name="LayoutRoot" Background="#FDFFFFFF">
+    	<Grid.RowDefinitions>            
+    		<RowDefinition Height="Auto" MinHeight="20"/>
+            <RowDefinition Height="100"/>
     		<RowDefinition/>
     		<RowDefinition Height="Auto"/>
     	</Grid.RowDefinitions>
-    	<ScrollViewer Name="MainScrollViewer"  Margin="0" Grid.Row="1" LayoutUpdated="MainScrollViewer_OnLayoutUpdated">
+        <local:LoadingControl Name="Loading"  Grid.Row="0"/>
+        <local:SearchControl Grid.Row="1"/>
+    	<ScrollViewer Name="MainScrollViewer"  Margin="0" Grid.Row="2" LayoutUpdated="MainScrollViewer_OnLayoutUpdated">
     		<Grid>
     			<Grid.ColumnDefinitions>
     				<ColumnDefinition/>
     				<ColumnDefinition/>
     			</Grid.ColumnDefinitions>
-    			<StackPanel x:Name="LeftPanel" Margin="0" />
+                <StackPanel x:Name="LeftPanel" Margin="0"/>
     		    <StackPanel x:Name="RightPanel" Grid.Column="1" Margin="0"/>
     		</Grid>
     	</ScrollViewer>

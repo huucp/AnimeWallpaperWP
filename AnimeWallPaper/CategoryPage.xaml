@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:AnimeWallPaper"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -20,16 +21,17 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-    	<ScrollViewer Margin="0" Grid.Row="1">
-    		<Grid>
-    			<Grid.ColumnDefinitions>
-    				<ColumnDefinition/>
-    				<ColumnDefinition/>
-    			</Grid.ColumnDefinitions>
-    			<StackPanel x:Name="LeftPanel" Margin="0"/>
-    			<StackPanel x:Name="RightPanel" Grid.Column="1" Margin="0"/>
-    		</Grid>
-    	</ScrollViewer>
+        <local:LoadingControl Name="Loading" Grid.Row="0"/>
+        <ScrollViewer Margin="0" Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel x:Name="LeftPanel" Margin="0"/>
+                <StackPanel x:Name="RightPanel" Grid.Column="1" Margin="0"/>
+            </Grid>
+        </ScrollViewer>
 
         <!--TitlePanel contains the name of the application and page title-->
 

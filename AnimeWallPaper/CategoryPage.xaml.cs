@@ -21,7 +21,7 @@ namespace AnimeWallPaper
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);            
+            base.OnNavigatedTo(e);
             string id;
             if (e.NavigationMode == NavigationMode.New && NavigationContext.QueryString.TryGetValue("id", out id))
             {
@@ -41,6 +41,7 @@ namespace AnimeWallPaper
                             var rControl = new ImageControl(images._content[i + 1]);
                             RightPanel.Children.Add(rControl);
                         }
+                        Loading.Visibility = Visibility.Collapsed;
                     });
 
                 };
