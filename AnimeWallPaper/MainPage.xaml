@@ -17,7 +17,7 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="#FDFFFFFF">
     	<Grid.RowDefinitions>            
-    		<RowDefinition Height="Auto" MinHeight="20"/>
+    		<RowDefinition Height="Auto" MinHeight="30"/>
             <RowDefinition Height="100"/>
     		<RowDefinition/>
     		<RowDefinition Height="Auto"/>

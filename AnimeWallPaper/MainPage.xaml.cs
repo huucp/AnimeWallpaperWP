@@ -12,7 +12,7 @@ namespace AnimeWallPaper
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private List<AnimeCategory> _listCategory = new List<AnimeCategory>();
+        public static List<AnimeCategory> ListCategory = new List<AnimeCategory>();
         private int _index = 0;
         private const int NumberOfCategoryAdded = 20;
         // Constructor
@@ -33,13 +33,13 @@ namespace AnimeWallPaper
 
         private void AddCategory()
         {
-            if (_index >= _listCategory.Count) return;
+            if (_index >= ListCategory.Count) return;
             for (int i = _index; i < _index + NumberOfCategoryAdded; i += 2)
             {
-                var control = new ImageControl(_listCategory[i]);
+                var control = new ImageControl(ListCategory[i]);
                 LeftPanel.Children.Add(control);
-                if ((i + 1) == _listCategory.Count) break;
-                var control2 = new ImageControl(_listCategory[i + 1]);
+                if ((i + 1) == ListCategory.Count) break;
+                var control2 = new ImageControl(ListCategory[i + 1]);
                 RightPanel.Children.Add(control2);
             }
             _index += NumberOfCategoryAdded;
@@ -67,7 +67,7 @@ namespace AnimeWallPaper
             var json = GlobalFunctions.GetListCategories();
             if (json != string.Empty)
             {
-                _listCategory = ParseCategory(json);
+                ListCategory = ParseCategory(json);
                 AddCategory();
                 Loading.Visibility = Visibility.Collapsed;
             }
@@ -78,7 +78,7 @@ namespace AnimeWallPaper
                 {
                     var dataString = (string)data;
                     if (data == null || dataString == json) return;
-                    _listCategory = ParseCategory(dataString);
+                    ListCategory = ParseCategory(dataString);
                     Dispatcher.BeginInvoke(delegate()
                     {
                         AddCategory();

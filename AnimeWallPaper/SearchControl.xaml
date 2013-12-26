@@ -7,11 +7,13 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="480" d:DesignWidth="480" Height="80">
+    d:DesignHeight="480" d:DesignWidth="480" Height="70">
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <TextBox HorizontalAlignment="Stretch" BorderThickness="1" BorderBrush="Black" 
-                 Background="White" Opacity="0.3" SelectionBackground="LightBlue"
-                 KeyUp="InputBox_OnKeyUp" Name="InputBox"/>
+        <TextBox HorizontalAlignment="Stretch" BorderThickness="1" BorderBrush="#FFDBDADA" 
+                 Background="#FFEDEDED" SelectionBackground="LightBlue"
+                 Name="InputBox" Text="Search" Foreground="DarkGray"
+                 KeyUp="InputBox_OnKeyUp" GotFocus="InputBox_OnGotFocus" LostFocus="InputBox_OnLostFocus"  TextChanged="InputBox_OnTextChanged" InputScope="Search"/>
+        <Image HorizontalAlignment="Right" Height="30" Margin="0,0,20,0" VerticalAlignment="Center" Width="30" Source="/Assets/close button.png" RenderTransformOrigin="0.535,0.865" MouseLeftButtonDown="EmptySearch_OnMouseLeftButtonDown"/>
     </Grid>
 </UserControl>
