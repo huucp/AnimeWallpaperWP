@@ -84,5 +84,9 @@ namespace AnimeWallPaper
         {
             Debug.WriteLine("Received ad successfully");
         }        
+
+        private void LeftPanel_OnItemRealized(object sender, ItemRealizationEventArgs e)
+        {
+        }
     }
 }

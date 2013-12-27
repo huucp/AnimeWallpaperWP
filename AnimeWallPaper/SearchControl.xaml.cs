@@ -40,12 +40,7 @@ namespace AnimeWallPaper
 
         private void InputBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_query == string.Empty && InputBox.Text == "Search") return;
-            if(InputBox.Text==FocusTextboxString)
-            {
-                InputBox.Focus();
-                InputBox.Text = string.Empty;
-            }
+            if (_query == string.Empty && InputBox.Text == "Search") return;            
             _query = InputBox.Text;
         }
 
@@ -56,14 +51,6 @@ namespace AnimeWallPaper
             {
                 InputBox.Text = "Search";
             }
-        }
-
-        private void EmptySearch_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            InputBox.Text = FocusTextboxString;
-
-        }
-
-        private const string FocusTextboxString = "Please focus textbox";
+        }       
     }
 }

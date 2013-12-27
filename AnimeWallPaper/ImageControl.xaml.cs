@@ -34,7 +34,7 @@ namespace AnimeWallPaper
         public ImageControl(ImageInfo info)
             : this()
         {
-            _viewModel.GetImage(info.Derivatives.XSmall.Url);
+            _viewModel.GetImage(info.Derivatives.Thumb.Url);
             hasName = false;
             NameBorder.Visibility = Visibility.Collapsed;
             _imageInfo = info;

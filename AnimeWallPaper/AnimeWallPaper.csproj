@@ -241,7 +241,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AnimeWallPaper_2013_12_27_14_57_11.sap" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">

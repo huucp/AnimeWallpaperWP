@@ -31,8 +31,10 @@
                 </Grid.ColumnDefinitions>
                 <!--<ListBox x:Name="LeftPanel" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
                 <ListBox x:Name="RightPanel" Grid.Column="1" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>-->
-                <phone:LongListSelector x:Name="LeftPanel" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsGroupingEnabled="False"/>
-                <phone:LongListSelector x:Name="RightPanel" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsGroupingEnabled="False"/>
+                <phone:LongListSelector x:Name="LeftPanel" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                                        IsGroupingEnabled="False" LayoutMode="List" ItemRealized="LeftPanel_OnItemRealized"/>
+                <phone:LongListSelector x:Name="RightPanel" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                                        IsGroupingEnabled="False" LayoutMode="List"/>
             </Grid>
         </ScrollViewer>
         <TextBlock x:Name="Label" HorizontalAlignment="Center" Margin="0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="48" Foreground="#FF3C3C3C" />

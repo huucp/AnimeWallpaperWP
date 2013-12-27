@@ -34,13 +34,10 @@ namespace AnimeWallPaper.Request
     public class DerivativeType
     {
         public string Url { get; set; }
-    }
-    public class LargeImageType
-    {
-        public string Url { get; set; }
-    }
+    }    
     public class DerivativesType
     {
+        public DerivativeType Thumb { get; set; } 
         public DerivativeType XSmall { get; set; }
         public DerivativeType Large { get; set; }
     }
