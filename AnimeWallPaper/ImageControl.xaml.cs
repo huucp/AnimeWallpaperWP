@@ -48,7 +48,7 @@ namespace AnimeWallPaper
             if (hasName)
             {
                 //GlobalVariables.WorkerImage.ClearAll();
-                phoneApplicationFrame.Navigate(new Uri("/CategoryPage.xaml?id=" + _categoryInfo.ID, UriKind.Relative));
+                phoneApplicationFrame.Navigate(new Uri("/CategoryPage.xaml?id=" + _categoryInfo.ID +"&name="+_categoryInfo.Name, UriKind.Relative));
             }
             else
             {// GlobalVariables.WorkerImage.ClearAll();

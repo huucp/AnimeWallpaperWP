@@ -14,6 +14,6 @@
                  Background="#FFEDEDED" SelectionBackground="LightBlue"
                  Name="InputBox" Text="Search" Foreground="DarkGray"
                  KeyUp="InputBox_OnKeyUp" GotFocus="InputBox_OnGotFocus" LostFocus="InputBox_OnLostFocus"  TextChanged="InputBox_OnTextChanged" InputScope="Search"/>
-        <Image HorizontalAlignment="Right" Height="30" Margin="0,0,20,0" VerticalAlignment="Center" Width="30" Source="/Assets/close button.png" RenderTransformOrigin="0.535,0.865" MouseLeftButtonDown="EmptySearch_OnMouseLeftButtonDown"/>
+        <!--<Image HorizontalAlignment="Right" Height="30" Margin="0,0,20,0" VerticalAlignment="Center" Width="30" Source="/Assets/close button.png" RenderTransformOrigin="0.535,0.865" MouseLeftButtonDown="EmptySearch_OnMouseLeftButtonDown"/>-->
     </Grid>
 </UserControl>

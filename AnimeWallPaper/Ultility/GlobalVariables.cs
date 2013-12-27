@@ -13,5 +13,6 @@ namespace AnimeWallPaper
         public static RequestWorker WorkerRequest = RequestWorker.Instance;
         public static ImageDownloader WorkerImage = ImageDownloader.Instance;
         public static LimitedItemImageDictionary ImageDictionary = new LimitedItemImageDictionary();
+        public static string AdId = "a152b86315e5016";
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using AnimeWallPaper.Ultility;
 
 namespace AnimeWallPaper.ViewModels
 {
-    public class ImageControlViewModel:ViewModelBase
+    public class ImageControlViewModel : ViewModelBase
     {
         private BitmapImage _imageSource = null;
         public BitmapImage ImageSource
@@ -43,7 +44,7 @@ namespace AnimeWallPaper.ViewModels
 
         private void ImageDownloadDownloadCompleted(BitmapImage sender)
         {
-            ImageSource = sender;
+            Deployment.Current.Dispatcher.BeginInvoke(() => ImageSource = sender);
         }
     }
 }

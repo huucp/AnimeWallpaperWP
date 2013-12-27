@@ -11,8 +11,11 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480" 
-    Width="236" Height="156" Margin="2,2"
+    Margin="2,2"
+    Width="236" Height="156"
+	MinHeight="156" 
     >
+    <!--Width="236" Height="156"-->
 	<UserControl.DataContext>
 		<ViewModels:ImageControlViewModel/>
 	</UserControl.DataContext>

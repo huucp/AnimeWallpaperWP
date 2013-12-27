@@ -18,24 +18,24 @@
     <Grid x:Name="LayoutRoot" Background="#FDFFFFFF">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" MinHeight="30"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <local:LoadingControl Name="Loading" Grid.Row="0"/>
-        <ScrollViewer Margin="0" Grid.Row="1">
+        <ScrollViewer Margin="0" Grid.Row="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <StackPanel x:Name="LeftPanel" Margin="0"/>
-                <StackPanel x:Name="RightPanel" Grid.Column="1" Margin="0"/>
+                <!--<ListBox x:Name="LeftPanel" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                <ListBox x:Name="RightPanel" Grid.Column="1" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>-->
+                <phone:LongListSelector x:Name="LeftPanel" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsGroupingEnabled="False"/>
+                <phone:LongListSelector x:Name="RightPanel" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsGroupingEnabled="False"/>
             </Grid>
         </ScrollViewer>
-
-        <!--TitlePanel contains the name of the application and page title-->
-
-        <!--ContentPanel - place additional content here-->
+        <TextBlock x:Name="Label" HorizontalAlignment="Center" Margin="0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="48" Foreground="#FF3C3C3C" />
     </Grid>
 
 </phone:PhoneApplicationPage>

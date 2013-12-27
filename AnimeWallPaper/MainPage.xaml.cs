@@ -96,7 +96,7 @@ namespace AnimeWallPaper
             var bannerAd = new AdView
             {
                 Format = AdFormats.SmartBanner,
-                AdUnitID = "a152b86315e5016"
+                AdUnitID = GlobalVariables.AdId
             };
             bannerAd.ReceivedAd += OnAdReceived;
             bannerAd.FailedToReceiveAd += OnFailedToReceiveAd;
@@ -113,6 +113,11 @@ namespace AnimeWallPaper
         private void OnAdReceived(object sender, AdEventArgs e)
         {
             Debug.WriteLine("Received ad successfully");
+        }
+
+        private void SearchButton_OnClick(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/SearchPage.xaml", UriKind.Relative));
         }
     }
 }

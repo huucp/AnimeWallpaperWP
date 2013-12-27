@@ -89,6 +89,7 @@ namespace AnimeWallPaper.Ultility
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
                             var bi = new BitmapImage();
+                            bi.DecodePixelWidth = 480;
                             bi.SetSource(args.Result);
                             OnDownloadCompleted(bi);
                             GlobalVariables.ImageDictionary.Add(filename, bi);
