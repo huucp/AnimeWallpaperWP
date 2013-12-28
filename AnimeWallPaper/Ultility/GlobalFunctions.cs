@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.IO.IsolatedStorage;
+using System.Windows;
+using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 using AnimeWallPaper.Ultility;
 
 namespace AnimeWallPaper
@@ -25,6 +29,7 @@ namespace AnimeWallPaper
             }
             return string.Empty;
         }
+
         public static void SaveListCategories(string file)
         {
             var storage = IsolatedStorageFile.GetUserStoreForApplication();
@@ -33,6 +38,21 @@ namespace AnimeWallPaper
             {
                 writer.Write(file);
             }
+        }
+
+        public static void DisposeImage(BitmapImage image)
+        {
+            var uri = new Uri("Assets/oneXone.png", UriKind.Relative);
+            StreamResourceInfo sr = Application.GetResourceStream(uri);
+            try
+            {
+                using (Stream stream = sr.Stream)
+                {
+                    image.DecodePixelWidth = 1; //This is essential!
+                    image.SetSource(stream);
+                }
+            }
+            catch { }
         }
     }
 }

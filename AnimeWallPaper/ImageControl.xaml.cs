@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using AnimeWallPaper.Request;
 using AnimeWallPaper.ViewModels;
 using Microsoft.Phone.Controls;
@@ -39,7 +40,39 @@ namespace AnimeWallPaper
             NameBorder.Visibility = Visibility.Collapsed;
             _imageInfo = info;
         }
+
+        public void LoadImage()
+        {
+            if (hasName)
+            {
+                return;
+            }
+            else
+            {
+                _viewModel.GetImage(_imageInfo.Derivatives.Thumb.Url);
+            }
+        }
+
+        public void ReloadImage()
+        {
+            if (hasName)
+            {
+                _viewModel.GetImage(_categoryInfo.Tn_Url);
+            }
+            else
+            {
+                _viewModel.GetImage(_imageInfo.Derivatives.Thumb.Url);
+            }
+        }
         
+        public void UnloadImage()
+        {
+            var bi = ImageContainer.Source as BitmapImage;
+            if (bi!=null)
+            {
+                bi.UriSource = null;
+            }
+        }
 
         private void GestureListener_OnTap(object sender, GestureEventArgs e)
         {

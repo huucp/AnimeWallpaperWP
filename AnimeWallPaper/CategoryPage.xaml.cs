@@ -40,8 +40,8 @@ namespace AnimeWallPaper
                     if (data == null || images == null) return;
                     Dispatcher.BeginInvoke(() =>
                     {
-                        List<ImageControl> lList= new List<ImageControl>();
-                        List<ImageControl> rList= new List<ImageControl>();
+                        var lList= new List<ImageControl>();
+                        var rList= new List<ImageControl>();
                         for (int i = 0; i < images.Count; i += 2)
                         {
                             var lControl = new ImageControl(images._content[i]);
@@ -85,8 +85,34 @@ namespace AnimeWallPaper
             Debug.WriteLine("Received ad successfully");
         }        
 
+        int count =0;
         private void LeftPanel_OnItemRealized(object sender, ItemRealizationEventArgs e)
         {
+           // Debug.WriteLine(++count);
+            //var imageControl = e.Container.Content as ImageControl;
+            //if (imageControl != null) imageControl.LoadImage();
+        }
+
+        private int count1 = 0;
+        private void LeftPanel_OnItemUnrealized(object sender, ItemRealizationEventArgs e)
+        {
+            Debug.WriteLine(++count1);
+            //Debug.WriteLine("LeftPanel_OnItemUnrealized");
+            //var imageControl = e.Container.Content as ImageControl;
+            //if (imageControl != null) imageControl.UnloadImage();
+        }
+
+        private void RightPanel_OnItemRealized(object sender, ItemRealizationEventArgs e)
+        {
+            var imageControl = e.Container.Content as ImageControl;
+            if (imageControl != null) imageControl.LoadImage();
+        }
+
+        private void RightPanel_OnItemUnrealized(object sender, ItemRealizationEventArgs e)
+        {
+            //Debug.WriteLine("RightPanel_OnItemUnrealized");
+            //var imageControl = e.Container.Content as ImageControl;
+            //if (imageControl != null) imageControl.UnloadImage();
         }
     }
 }
