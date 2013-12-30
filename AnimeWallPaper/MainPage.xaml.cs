@@ -34,7 +34,8 @@ namespace AnimeWallPaper
         private void AddCategory()
         {
             if (_index >= ListCategory.Count) return;
-            for (int i = _index; i < _index + NumberOfCategoryAdded; i += 2)
+            int maxIndex = Math.Min(_index + NumberOfCategoryAdded, ListCategory.Count);
+            for (int i = _index; i < maxIndex; i += 2)
             {
                 var control = new ImageControl(ListCategory[i]);
                 LeftPanel.Children.Add(control);
@@ -42,22 +43,90 @@ namespace AnimeWallPaper
                 var control2 = new ImageControl(ListCategory[i + 1]);
                 RightPanel.Children.Add(control2);
             }
-            _index += NumberOfCategoryAdded;
+            _index = maxIndex;
         }
+
 
         private void MainScrollViewer_OnLayoutUpdated(object sender, EventArgs e)
         {
-            int topIndex = GlobalFunctions.GetScrollViewerTopControlIndex(MainScrollViewer.VerticalOffset, 236);
-            int botIndex = GlobalFunctions.GetScrollViewerBottomControlIndex(MainScrollViewer.VerticalOffset,
-                MainScrollViewer.ActualHeight, 236, LeftPanel.Children.Count - 1);
-            Debug.WriteLine("top: {0} - bot: {1}",topIndex,botIndex);
+            if (LeftPanel.Children.Count > NumberOfCategoryAdded / 2)
+            {
+                int topIndex = GlobalFunctions.GetScrollViewerTopControlIndex(MainScrollViewer.VerticalOffset, 156);
+                int botIndex = GlobalFunctions.GetScrollViewerBottomControlIndex(MainScrollViewer.VerticalOffset,
+                    MainScrollViewer.ActualHeight, 156, LeftPanel.Children.Count - 1);
+                VitualizeContent(topIndex, botIndex);
+            }
+
             // Incremental loading
             if (Math.Abs(MainScrollViewer.ScrollableHeight - 0) > EPSILON && Math.Abs(MainScrollViewer.VerticalOffset - 0) > EPSILON &&
                 (MainScrollViewer.ScrollableHeight - MainScrollViewer.VerticalOffset) <= 200)
             {
-                Loading.Visibility = Visibility.Visible;
+                Loading.Visibility = Visibility.Visible;                
                 AddCategory();
                 Loading.Visibility = Visibility.Collapsed;
+            }
+        }       
+
+        private void VitualizeContent(int topIndex, int botIndex)
+        {
+            const int reservedIndex = 5;
+            if (topIndex > reservedIndex) ReleaseBeforeTop(topIndex - reservedIndex);
+            int minIndex = Math.Min(LeftPanel.Children.Count, RightPanel.Children.Count);
+            if (botIndex < minIndex - reservedIndex) ReleaseAfterBot(botIndex + reservedIndex, minIndex);
+            LoadOnViewportImages(topIndex - reservedIndex, botIndex + reservedIndex, minIndex);
+        }
+
+        private void LoadOnViewportImages(int topIndex, int bottomIndex, int maxIndex)
+        {
+            int top = topIndex < 0 ? 0 : topIndex;
+            int bot = bottomIndex > maxIndex ? maxIndex - 1 : bottomIndex;
+            Debug.WriteLine("load from {0} to {1} - maxIdex: {2}", top, bot, maxIndex);
+            for (int i = top; i < bot; i++)
+            {
+                var leftControl = LeftPanel.Children[i] as ImageControl;
+                if (leftControl != null && !leftControl.HasImage)
+                {
+                    leftControl.LoadImage();
+                }
+                var rightControl = RightPanel.Children[i] as ImageControl;
+                if (rightControl != null && !rightControl.HasImage)
+                {
+                    rightControl.LoadImage();
+                }
+            }
+        }
+
+        private void ReleaseAfterBot(int index, int maxIndex)
+        {
+            for (int i = index; i < maxIndex; i++)
+            {
+                var leftControl = LeftPanel.Children[i] as ImageControl;
+                if (leftControl != null && leftControl.HasImage)
+                {
+                    leftControl.UnloadImage();
+                }
+                var rightControl = RightPanel.Children[i] as ImageControl;
+                if (rightControl != null && rightControl.HasImage)
+                {
+                    rightControl.UnloadImage();
+                }
+            }
+        }
+
+        private void ReleaseBeforeTop(int index)
+        {
+            for (int i = 0; i < index; i++)
+            {
+                var leftControl = LeftPanel.Children[i] as ImageControl;
+                if (leftControl != null && leftControl.HasImage)
+                {
+                    leftControl.UnloadImage();
+                }
+                var rightControl = RightPanel.Children[i] as ImageControl;
+                if (rightControl != null && rightControl.HasImage)
+                {
+                    rightControl.UnloadImage();
+                }
             }
         }
 

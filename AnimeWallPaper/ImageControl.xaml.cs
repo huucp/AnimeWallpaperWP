@@ -39,8 +39,10 @@ namespace AnimeWallPaper
             _viewModel.GetImage(info.Derivatives.Thumb.Url);
             hasName = false;
             NameBorder.Visibility = Visibility.Collapsed;
+            HasImage = true;
         }
 
+        public bool HasImage;
         public void LoadImage()
         {
             if (hasName)
@@ -50,6 +52,7 @@ namespace AnimeWallPaper
             else
             {
                 _viewModel.GetImage(_imageInfo.Derivatives.Thumb.Url);
+                HasImage = true;
             }
         }
         
@@ -62,6 +65,7 @@ namespace AnimeWallPaper
                 bi.UriSource = null;
             }
             ImageContainer.Source = null;
+            HasImage = false;
         }
 
         private void GestureListener_OnTap(object sender, GestureEventArgs e)
