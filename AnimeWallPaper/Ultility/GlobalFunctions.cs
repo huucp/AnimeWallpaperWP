@@ -54,5 +54,20 @@ namespace AnimeWallPaper
             }
             catch { }
         }
+
+        public static int GetScrollViewerTopControlIndex(double verticalOfsset, double controlHeight)
+        {
+            int index = (int) (verticalOfsset/controlHeight)-1;
+            if (index < 0) return 0;
+            return index;
+        }
+
+        public static int GetScrollViewerBottomControlIndex(double verticalOfsset, double scrollViewerHeight,
+            double controlHeight, int maxIndex)
+        {
+            int index = (int) ((verticalOfsset + scrollViewerHeight)/controlHeight) + 1;
+            if (index > maxIndex) return maxIndex;
+            return index;
+        }
     }
 }

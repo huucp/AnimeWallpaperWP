@@ -35,10 +35,10 @@ namespace AnimeWallPaper
         public ImageControl(ImageInfo info)
             : this()
         {
+            _imageInfo = info;
             _viewModel.GetImage(info.Derivatives.Thumb.Url);
             hasName = false;
             NameBorder.Visibility = Visibility.Collapsed;
-            _imageInfo = info;
         }
 
         public void LoadImage()
@@ -52,26 +52,16 @@ namespace AnimeWallPaper
                 _viewModel.GetImage(_imageInfo.Derivatives.Thumb.Url);
             }
         }
-
-        public void ReloadImage()
-        {
-            if (hasName)
-            {
-                _viewModel.GetImage(_categoryInfo.Tn_Url);
-            }
-            else
-            {
-                _viewModel.GetImage(_imageInfo.Derivatives.Thumb.Url);
-            }
-        }
+        
         
         public void UnloadImage()
         {
-            var bi = ImageContainer.Source as BitmapImage;
+            var bi = ImageContainer.Source as BitmapImage;            
             if (bi!=null)
             {
                 bi.UriSource = null;
             }
+            ImageContainer.Source = null;
         }
 
         private void GestureListener_OnTap(object sender, GestureEventArgs e)

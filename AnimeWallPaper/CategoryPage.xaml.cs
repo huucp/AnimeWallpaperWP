@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using AnimeWallPaper.ViewModels;
 using GoogleAds;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -16,9 +17,11 @@ namespace AnimeWallPaper
 {
     public partial class CategoryPage : PhoneApplicationPage
     {
+        private CategoryPageViewModel _viewModel;
         public CategoryPage()
         {
             InitializeComponent();
+            _viewModel = (CategoryPageViewModel) DataContext;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -27,36 +30,14 @@ namespace AnimeWallPaper
             if (e.NavigationMode == NavigationMode.New && NavigationContext.QueryString.TryGetValue("id", out id))
             {
                 LoadAd();
+                _viewModel.GetImages(id);
                 string name;
-                if(NavigationContext.QueryString.TryGetValue("name", out name))
+                if (NavigationContext.QueryString.TryGetValue("name", out name))
                 {
                     Label.Text = name;
                 }
                 
-                var request = new GetImagesOfAnimeRequest(id);
-                request.ProcessSuccessfully += (data) =>
-                {
-                    var images = (ImagesJson)data;
-                    if (data == null || images == null) return;
-                    Dispatcher.BeginInvoke(() =>
-                    {
-                        var lList= new List<ImageControl>();
-                        var rList= new List<ImageControl>();
-                        for (int i = 0; i < images.Count; i += 2)
-                        {
-                            var lControl = new ImageControl(images._content[i]);
-                            lList.Add(lControl);
-                            if ((i + 1) == images.Count) break;
-                            var rControl = new ImageControl(images._content[i + 1]);
-                            rList.Add(rControl);
-                        }
-                        LeftPanel.ItemsSource = lList;
-                        RightPanel.ItemsSource = rList;
-                        Loading.Visibility = Visibility.Collapsed;
-                    });
-
-                };
-                GlobalVariables.WorkerRequest.AddRequest(request);
+                
             }
         }
 
@@ -86,33 +67,25 @@ namespace AnimeWallPaper
         }        
 
         int count =0;
-        private void LeftPanel_OnItemRealized(object sender, ItemRealizationEventArgs e)
+        
+        private void LongListSelector_OnItemUnrealized(object sender, ItemRealizationEventArgs e)
         {
-           // Debug.WriteLine(++count);
-            //var imageControl = e.Container.Content as ImageControl;
-            //if (imageControl != null) imageControl.LoadImage();
+            var control = e.Container.Content as ImageControl;
+            if (control != null)
+            {
+                control.UnloadImage();
+                Debug.WriteLine("unload");
+            }
         }
 
-        private int count1 = 0;
-        private void LeftPanel_OnItemUnrealized(object sender, ItemRealizationEventArgs e)
+        private void LongListSelector_OnItemRealized(object sender, ItemRealizationEventArgs e)
         {
-            Debug.WriteLine(++count1);
-            //Debug.WriteLine("LeftPanel_OnItemUnrealized");
-            //var imageControl = e.Container.Content as ImageControl;
-            //if (imageControl != null) imageControl.UnloadImage();
-        }
-
-        private void RightPanel_OnItemRealized(object sender, ItemRealizationEventArgs e)
-        {
-            var imageControl = e.Container.Content as ImageControl;
-            if (imageControl != null) imageControl.LoadImage();
-        }
-
-        private void RightPanel_OnItemUnrealized(object sender, ItemRealizationEventArgs e)
-        {
-            //Debug.WriteLine("RightPanel_OnItemUnrealized");
-            //var imageControl = e.Container.Content as ImageControl;
-            //if (imageControl != null) imageControl.UnloadImage();
+            var control = e.Container.Content as ImageControl;
+            if (control != null)
+            {
+                control.LoadImage();
+                Debug.WriteLine("load");
+            }
         }
     }
 }

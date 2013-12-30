@@ -171,6 +171,7 @@
     <Compile Include="LockscreenEditingPage.xaml.cs">
       <DependentUpon>LockscreenEditingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LongListSelectorEx.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -199,6 +200,7 @@
     <Compile Include="Ultility\ImageDownloader.cs" />
     <Compile Include="Ultility\LimitedItemImageDictionary.cs" />
     <Compile Include="Ultility\RequestWorker.cs" />
+    <Compile Include="ViewModels\CategoryPageViewModel.cs" />
     <Compile Include="ViewModels\ImageControlViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
   </ItemGroup>

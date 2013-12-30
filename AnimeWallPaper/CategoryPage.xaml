@@ -7,13 +7,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:AnimeWallPaper"
+    xmlns:viewModels="clr-namespace:AnimeWallPaper.ViewModels"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False">
-
+    <UserControl.DataContext>
+        <viewModels:CategoryPageViewModel/>
+    </UserControl.DataContext>
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="#FDFFFFFF">
         <Grid.RowDefinitions>
@@ -23,22 +26,17 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <local:LoadingControl Name="Loading" Grid.Row="0"/>
-        <!--<ScrollViewer Margin="0" Grid.Row="2">-->
-            <Grid Grid.Row="2">
+
+        <ScrollViewer Grid.Row="2">
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <!--<ListBox x:Name="LeftPanel" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-                <ListBox x:Name="RightPanel" Grid.Column="1" Margin="0" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>-->
-                <phone:LongListSelector x:Name="LeftPanel" Grid.Column="0" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                                        IsGroupingEnabled="False" LayoutMode="List" 
-                                        />
-                <phone:LongListSelector x:Name="RightPanel" Grid.Column="1" ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                                        IsGroupingEnabled="False" LayoutMode="List"
-                                        />
+                <ListBox ItemsSource="{Binding ListImages}" Grid.Column="0"/>
+                <!--<ListBox ItemsSource="{Binding ListImages}" Grid.Column="1"/>-->
             </Grid>
-        <!--</ScrollViewer>-->
+        </ScrollViewer>
         <TextBlock x:Name="Label" HorizontalAlignment="Center" Margin="0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="48" Foreground="#FF3C3C3C" />
     </Grid>
 

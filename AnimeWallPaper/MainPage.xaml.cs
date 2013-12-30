@@ -47,12 +47,17 @@ namespace AnimeWallPaper
 
         private void MainScrollViewer_OnLayoutUpdated(object sender, EventArgs e)
         {
+            int topIndex = GlobalFunctions.GetScrollViewerTopControlIndex(MainScrollViewer.VerticalOffset, 236);
+            int botIndex = GlobalFunctions.GetScrollViewerBottomControlIndex(MainScrollViewer.VerticalOffset,
+                MainScrollViewer.ActualHeight, 236, LeftPanel.Children.Count - 1);
+            Debug.WriteLine("top: {0} - bot: {1}",topIndex,botIndex);
+            // Incremental loading
             if (Math.Abs(MainScrollViewer.ScrollableHeight - 0) > EPSILON && Math.Abs(MainScrollViewer.VerticalOffset - 0) > EPSILON &&
-                (MainScrollViewer.ScrollableHeight - MainScrollViewer.VerticalOffset) <= 100)
+                (MainScrollViewer.ScrollableHeight - MainScrollViewer.VerticalOffset) <= 200)
             {
-                Loading.Visibility=Visibility.Visible;
+                Loading.Visibility = Visibility.Visible;
                 AddCategory();
-                Loading.Visibility=Visibility.Collapsed;
+                Loading.Visibility = Visibility.Collapsed;
             }
         }
 
