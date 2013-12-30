@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using GoogleAds;
 using Microsoft.Phone.Controls;
 using AnimeWallPaper.Request;
@@ -49,30 +51,43 @@ namespace AnimeWallPaper
 
         private void MainScrollViewer_OnLayoutUpdated(object sender, EventArgs e)
         {
-            if (LeftPanel.Children.Count > NumberOfCategoryAdded / 2)
+            var element = VisualTreeHelper.GetChild(MainScrollViewer, 0) as FrameworkElement;
+            if (element != null)
             {
-                int topIndex = GlobalFunctions.GetScrollViewerTopControlIndex(MainScrollViewer.VerticalOffset, 156);
-                int botIndex = GlobalFunctions.GetScrollViewerBottomControlIndex(MainScrollViewer.VerticalOffset,
-                    MainScrollViewer.ActualHeight, 156, LeftPanel.Children.Count - 1);
-                VitualizeContent(topIndex, botIndex);
+                VisualStateGroup group = FindVisualState(element, "ScrollStates");
+                if (group != null)
+                {
+                    Debug.WriteLine(group.CurrentState.Name);
+                    if (LeftPanel.Children.Count > NumberOfCategoryAdded / 2 && group.CurrentState.Name == "NotScrolling")
+                    {
+                        int topIndex = GlobalFunctions.GetScrollViewerTopControlIndex(MainScrollViewer.VerticalOffset, 156);
+                        int botIndex = GlobalFunctions.GetScrollViewerBottomControlIndex(MainScrollViewer.VerticalOffset,
+                            MainScrollViewer.ActualHeight, 156, LeftPanel.Children.Count - 1);
+                        VitualizeContent(topIndex, botIndex);
+                    }
+                }
             }
+
+
 
             // Incremental loading
             if (Math.Abs(MainScrollViewer.ScrollableHeight - 0) > EPSILON && Math.Abs(MainScrollViewer.VerticalOffset - 0) > EPSILON &&
                 (MainScrollViewer.ScrollableHeight - MainScrollViewer.VerticalOffset) <= 200)
             {
-                Loading.Visibility = Visibility.Visible;                
+                Loading.Visibility = Visibility.Visible;
                 AddCategory();
                 Loading.Visibility = Visibility.Collapsed;
             }
-        }       
+        }
 
+        private int prevTopIndex, prevBotIndex;
         private void VitualizeContent(int topIndex, int botIndex)
         {
             const int reservedIndex = 5;
             if (topIndex > reservedIndex) ReleaseBeforeTop(topIndex - reservedIndex);
             int minIndex = Math.Min(LeftPanel.Children.Count, RightPanel.Children.Count);
             if (botIndex < minIndex - reservedIndex) ReleaseAfterBot(botIndex + reservedIndex, minIndex);
+            if (prevBotIndex == botIndex && prevTopIndex == topIndex) return; // Prevent call LoadOnViewportImages with same bot and top index
             LoadOnViewportImages(topIndex - reservedIndex, botIndex + reservedIndex, minIndex);
         }
 
@@ -80,16 +95,16 @@ namespace AnimeWallPaper
         {
             int top = topIndex < 0 ? 0 : topIndex;
             int bot = bottomIndex > maxIndex ? maxIndex - 1 : bottomIndex;
-            Debug.WriteLine("load from {0} to {1} - maxIdex: {2}", top, bot, maxIndex);
+            //Debug.WriteLine("Load from top {0} to bot {1} with maxIndex {2}", top, bot, maxIndex);
             for (int i = top; i < bot; i++)
             {
                 var leftControl = LeftPanel.Children[i] as ImageControl;
-                if (leftControl != null && !leftControl.HasImage)
+                if (leftControl != null)
                 {
                     leftControl.LoadImage();
                 }
                 var rightControl = RightPanel.Children[i] as ImageControl;
-                if (rightControl != null && !rightControl.HasImage)
+                if (rightControl != null)
                 {
                     rightControl.LoadImage();
                 }
@@ -192,6 +207,44 @@ namespace AnimeWallPaper
         private void SearchButton_OnClick(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/SearchPage.xaml", UriKind.Relative));
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < LeftPanel.Children.Count; i++)
+            {
+                var control = LeftPanel.Children[i] as ImageControl;
+                if (control != null && control.HasImage)
+                {
+                    control.UnloadImage();
+                }
+            }
+        }
+        VisualStateGroup FindVisualState(FrameworkElement element, string name)
+        {
+            if (element == null)
+                return null;
+
+            IList groups = VisualStateManager.GetVisualStateGroups(element);
+            foreach (VisualStateGroup group in groups)
+                if (group.Name == name)
+                    return group;
+
+            return null;
+        }
+
+        T FindSimpleVisualChild<T>(DependencyObject element) where T : class
+        {
+            while (element != null)
+            {
+
+                if (element is T)
+                    return element as T;
+
+                element = VisualTreeHelper.GetChild(element, 0);
+            }
+
+            return null;
         }
     }
 }

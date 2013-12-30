@@ -26,6 +26,7 @@
         </toolkit:GestureService.GestureListener>        
         <TextBlock HorizontalAlignment="Center" Margin="0,2,0,0" TextWrapping="Wrap" Text="Loading..." VerticalAlignment="Center" Foreground="Black"/>
         <Image Name="ImageContainer"  Margin="0" Stretch="UniformToFill" Source="{Binding ImageSource}"/>
+        <!--<Image Name="ImageContainer"  Margin="0" Stretch="UniformToFill"/>-->
 		<Border x:Name="NameBorder" BorderBrush="Black" BorderThickness="0" Margin="0" VerticalAlignment="Bottom" Height="36" Background="Black" Opacity="0.5">
 			<TextBlock Margin="0"  Text="{Binding Name}" TextWrapping="Wrap" FontSize="20"
                        Foreground="White" TextTrimming="WordEllipsis" HorizontalAlignment="Center" />

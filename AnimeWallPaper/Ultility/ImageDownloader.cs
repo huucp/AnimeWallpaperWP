@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -138,9 +139,11 @@ namespace AnimeWallPaper.Ultility
             backgroundWorker.Start();
         }
 
+        private int count = 0;
         public void AddDownload(ImageRequest request)
         {
             ListsJobs.Add(request);
+            count++;
         }
 
         public void ClearAll()
@@ -151,8 +154,10 @@ namespace AnimeWallPaper.Ultility
         private void MainProcess()
         {
             while (true)
-            {
+            {                                
                 var currentJob = ListsJobs.Get();
+                count--;
+                Debug.WriteLine("Remain {0} image download",count);
                 if (currentJob == null) continue;
                 currentJob.Process();
             }

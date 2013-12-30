@@ -6,38 +6,39 @@ namespace AnimeWallPaper.Ultility
 {
     public class LimitedItemImageDictionary
     {
-        private List<KeyValuePair<string, BitmapImage>> _imageDictionay = new List<KeyValuePair<string, BitmapImage>>();
+        private List<KeyValuePair<string, BitmapImage>> _imageDictionary = new List<KeyValuePair<string, BitmapImage>>();
         private const int Limited = 40;
 
         public void Add(string key, BitmapImage image)
         {
-            // If the list exceed its limit
-            if (_imageDictionay.Count >= Limited)
+            lock(_imageDictionary)
             {
-                _imageDictionay.RemoveAt(0);
+                // If the list exceed its limit
+                if (_imageDictionary.Count >= Limited)
+                {
+                    _imageDictionary.RemoveAt(0);
+                }
+                // Already in list
+                if (Contain(key)) return;
+                _imageDictionary.Add(new KeyValuePair<string, BitmapImage>(key, image));
             }
-            // Already in list
-            if (Contain(key)) return;
-            _imageDictionay.Add(new KeyValuePair<string, BitmapImage>(key, image));
+            
         }
 
         public bool Contain(string key)
         {
-            var dictionay = new List<KeyValuePair<string, BitmapImage>>(_imageDictionay);
-            return dictionay.Any(item => item.Key == key);
+            lock (_imageDictionary)
+            {
+                return _imageDictionary.Any(item => item.Key == key);
+            }                    
         }
 
         public BitmapImage GetImage(string key)
         {
-            foreach (var item in _imageDictionay)
+            lock(_imageDictionary)
             {
-                if (item.Key == key)
-                {
-                    BitmapImage bitmapImage = item.Value;
-                    return bitmapImage;
-                }
+                return (from item in _imageDictionary where item.Key == key select item.Value).FirstOrDefault();
             }
-            return null;
         }
     }
 }

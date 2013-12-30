@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using AnimeWallPaper.Request;
+using AnimeWallPaper.Ultility;
 using AnimeWallPaper.ViewModels;
 using Microsoft.Phone.Controls;
 using GestureEventArgs = Microsoft.Phone.Controls.GestureEventArgs;
@@ -28,6 +29,7 @@ namespace AnimeWallPaper
         {
             _categoryInfo = info;
             _viewModel.GetImage(info.Tn_Url);
+            //GetImage(info.Tn_Url);
             _viewModel.Name = info.Name;
             hasName = true;
         }
@@ -37,36 +39,50 @@ namespace AnimeWallPaper
         {
             _imageInfo = info;
             _viewModel.GetImage(info.Derivatives.Thumb.Url);
+            //GetImage(info.Derivatives.Thumb.Url);
             hasName = false;
             NameBorder.Visibility = Visibility.Collapsed;
-            HasImage = true;
         }
 
-        public bool HasImage;
+        public bool HasImage { get { return _viewModel.ImageLoaded; } }
         public void LoadImage()
         {
             if (hasName)
             {
-                return;
+
+                _viewModel.GetImage(_categoryInfo.Tn_Url);
             }
             else
             {
                 _viewModel.GetImage(_imageInfo.Derivatives.Thumb.Url);
-                HasImage = true;
+                //GetImage(_imageInfo.Derivatives.Thumb.Url);
             }
+            
         }
-        
-        
+
+
         public void UnloadImage()
         {
-            var bi = ImageContainer.Source as BitmapImage;            
-            if (bi!=null)
+            var bi = ImageContainer.Source as BitmapImage;
+            if (bi != null)
             {
                 bi.UriSource = null;
             }
-            ImageContainer.Source = null;
-            HasImage = false;
+            //ImageContainer.Source = null;
+            _viewModel.UnloadImage();
         }
+
+        //public void GetImage(string url)
+        //{
+        //    var imageDownload = new ImageRequest(url);
+        //    imageDownload.DownloadCompleted += ImageDownloadDownloadCompleted;
+        //    GlobalVariables.WorkerImage.AddDownload(imageDownload);
+        //}
+
+        //private void ImageDownloadDownloadCompleted(BitmapImage sender)
+        //{
+        //    Dispatcher.BeginInvoke(() => ImageContainer.Source = sender);
+        //}
 
         private void GestureListener_OnTap(object sender, GestureEventArgs e)
         {
@@ -75,7 +91,7 @@ namespace AnimeWallPaper
             if (hasName)
             {
                 //GlobalVariables.WorkerImage.ClearAll();
-                phoneApplicationFrame.Navigate(new Uri("/CategoryPage.xaml?id=" + _categoryInfo.ID +"&name="+_categoryInfo.Name, UriKind.Relative));
+                phoneApplicationFrame.Navigate(new Uri("/CategoryPage.xaml?id=" + _categoryInfo.ID + "&name=" + _categoryInfo.Name, UriKind.Relative));
             }
             else
             {// GlobalVariables.WorkerImage.ClearAll();

@@ -23,7 +23,7 @@
     		<RowDefinition Height="Auto"/>
             <RowDefinition Height="20"/>
     	</Grid.RowDefinitions>
-        <local:LoadingControl Name="Loading"  Grid.Row="0"/>
+        <local:LoadingControl Name="Loading"  Grid.Row="0"/>        
     	<ScrollViewer Name="MainScrollViewer"  Margin="0" Grid.Row="2" LayoutUpdated="MainScrollViewer_OnLayoutUpdated">
     		<Grid>
     			<Grid.ColumnDefinitions>
@@ -35,6 +35,7 @@
     		</Grid>
     	</ScrollViewer>
     	<TextBlock HorizontalAlignment="Center" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="All" VerticalAlignment="Center" Foreground="#FF3C3C3C" FontSize="64"/>
+        <!--<Button Content="Unload" Click="ButtonBase_OnClick"/>-->
     </Grid>
 	<phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.5" Mode="Minimized">
